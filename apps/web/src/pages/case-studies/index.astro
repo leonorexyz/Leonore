@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import { getPortfolioContent } from '../../lib/content';
+
+const { caseStudies } = await getPortfolioContent();
+---
+
+<BaseLayout title="Case Studies | Hengki Pranoto" description="Architecture case studies structured around problem, constraints, decisions, delivery, operations, outcome, and evidence.">
+  <header class="page-hero surface-bright">
+    <div class="shell page-hero-grid">
+      <div><p class="eyebrow">Evidence over capability claims</p><h1>Case studies</h1><p class="lead">Work explained through context, constraints, decisions, trade-offs, delivery, operational readiness, and evidence.</p></div>
+      <aside class="page-aside">Client identities, internal topology, and unsupported metrics remain unpublished. R&D work is labeled explicitly.</aside>
+    </div>
+  </header>
+  <section class="page-section-compact"><div class="shell case-list">{caseStudies.map((study, index) => <CaseStudyCard study={study} index={index} />)}</div></section>
+</BaseLayout>

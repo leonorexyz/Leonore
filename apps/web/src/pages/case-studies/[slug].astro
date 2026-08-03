@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MetricStrip from '../../components/MetricStrip.astro';
+import ArchitectureMap from '../../components/ArchitectureMap.astro';
+import { getPortfolioContent } from '../../lib/content';
+import type { CaseStudy } from '../../types/content';
+
+export async function getStaticPaths() {
+  const { caseStudies } = await getPortfolioContent();
+  return caseStudies.map((study) => ({ params: { slug: study.slug }, props: { study } }));
+}
+
+interface Props { study: CaseStudy; }
+const { study } = Astro.props;
+const sections = [
+  ['context', 'Context'], ['problem', 'Problem'], ['constraints', 'Constraints'], ['architecture', 'Architecture'],
+  ['decisions', 'Decisions'], ['delivery', 'Delivery'], ['operations', 'Operations'], ['failure', 'Failure strategy'], ['outcome', 'Outcome'], ['lessons', 'Lessons']
+];
+const breadcrumbs = [{ name: 'Home', url: '/' }, { name: 'Case Studies', url: '/case-studies/' }, { name: study.title, url: `/case-studies/${study.slug}/` }];
+---
+
+<BaseLayout title={study.seoTitle} description={study.seoDescription} breadcrumbs={breadcrumbs}>
+  <div class="detail-hero">
+    <header class="page-hero"><div class="shell page-hero-grid"><div><div class="card-meta"><span>{study.industry}</span><span class:list={['status', study.status === 'R&D' && 'status-rd']}>{study.status}</span></div><h1 style="font-size: clamp(2.8rem, 7vw, 6.3rem)">{study.title}</h1><p class="lead">{study.summary}</p></div><aside class="page-aside"><strong>{study.role}</strong><br />{study.period}<br /><br />{study.disclosure}</aside></div></header>
+  </div>
+  <section class="page-section-compact"><div class="shell detail-grid">
+    <nav class="detail-nav" aria-label="Case study sections">{sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}</nav>
+    <article class="detail-content">
+      <section class="detail-section" id="context"><p class="eyebrow">Executive summary</p><h2>Business context</h2><p>{study.summary}</p><p><strong>Responsibility:</strong> {study.role}</p></section>
+      <section class="detail-section" id="problem"><p class="eyebrow">Problem</p><h2>What had to change</h2><p>{study.problem}</p></section>
+      <section class="detail-section" id="constraints"><p class="eyebrow">Constraints</p><h2>The architecture inputs</h2><ul>{study.constraints.map((entry) => <li>{entry}</li>)}</ul><div class="detail-callout"><strong>Responsibilities</strong><ul>{study.responsibilities.map((entry) => <li>{entry}</li>)}</ul></div></section>
+      <section class="detail-section" id="architecture"><p class="eyebrow">Architecture</p><h2>From existing state to target state</h2><h3>Existing state</h3><p>{study.existingState}</p><h3>Target state</h3><p>{study.targetState}</p><ArchitectureMap variant={study.status === 'R&D' ? 'ai' : 'delivery'} /></section>
+      <section class="detail-section" id="decisions"><p class="eyebrow">Decision record</p><h2>Alternatives, decisions, and trade-offs</h2><h3>Alternatives considered</h3><ul>{study.alternatives.map((entry) => <li>{entry}</li>)}</ul><h3>Key decisions</h3><ul>{study.decisions.map((entry) => <li>{entry}</li>)}</ul><h3>Trade-offs</h3><ul>{study.tradeoffs.map((entry) => <li>{entry}</li>)}</ul></section>
+      <section class="detail-section" id="delivery"><p class="eyebrow">Delivery approach</p><h2>How the design moved toward release</h2><ul>{study.delivery.map((entry) => <li>{entry}</li>)}</ul></section>
+      <section class="detail-section" id="operations"><p class="eyebrow">Production readiness</p><h2>Operations and security</h2><h3>Operational considerations</h3><ul>{study.operations.map((entry) => <li>{entry}</li>)}</ul><h3>Security considerations</h3><ul>{study.security.map((entry) => <li>{entry}</li>)}</ul></section>
+      <section class="detail-section" id="failure"><p class="eyebrow">Recovery</p><h2>Rollback and failure strategy</h2><ul>{study.failureStrategy.map((entry) => <li>{entry}</li>)}</ul></section>
+      <section class="detail-section" id="outcome"><p class="eyebrow">Outcome</p><h2>What can be claimed</h2><p>{study.outcome}</p>{study.metrics.length > 0 && <MetricStrip metrics={study.metrics} />}</section>
+      <section class="detail-section" id="lessons"><p class="eyebrow">Lessons</p><h2>What transfers to the next system</h2><ul>{study.lessons.map((entry) => <li>{entry}</li>)}</ul><div class="tag-list">{[...study.technologies, ...study.capabilities].map((tag) => <span>{tag}</span>)}</div></section>
+    </article>
+  </div></section>
+</BaseLayout>

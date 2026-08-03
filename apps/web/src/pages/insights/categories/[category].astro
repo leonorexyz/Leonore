@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../../../lib/content';
+import { toSlug, uniqueSlugs } from '../../../lib/slug';
+import type { Article } from '../../../types/content';
+
+export async function getStaticPaths() {
+  const { articles } = await getPortfolioContent();
+  return uniqueSlugs(articles.map((article) => article.category)).map((category) => ({ params: { category }, props: { articles: articles.filter((article) => toSlug(article.category) === category) } }));
+}
+interface Props { articles: Article[]; }
+const { articles } = Astro.props;
+const title = articles[0]?.category || 'Category';
+---
+<BaseLayout title={`${title} Insights | Hengki Pranoto`} description={`Articles in ${title}.`}><header class="page-hero surface-bright"><div class="shell"><p class="eyebrow">Insight category</p><h1 style="margin-top:1.35rem">{title}</h1></div></header><section class="page-section-compact"><div class="shell insight-list">{articles.map((article) => <article class="insight-row"><span>{article.category}</span><div><h2><a href={`/insights/${article.slug}/`}>{article.title}</a></h2><p>{article.summary}</p></div><time datetime={article.publishedAt}>{article.publishedAt}</time></article>)}</div></section></BaseLayout>

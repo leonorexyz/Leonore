@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../lib/content';
+
+const { settings } = await getPortfolioContent();
+---
+
+<BaseLayout title="Resume | Hengki Pranoto" description="Download Hengki Pranoto's concise public Solution Architect resume." noindex={true}>
+  <section class="page-section"><div class="narrow"><p class="eyebrow">Resume</p><h1 style="font-size: clamp(3rem, 8vw, 6rem); margin-top: 1rem">Hengki Pranoto</h1><p style="font-size:1.4rem; margin-top:1rem">Solution Architect · Tangerang, Indonesia</p><p class="muted" style="margin-top:1.5rem">A concise public resume is available as a PDF. Employer names, private client details, and unsupported metrics are intentionally excluded from this version.</p><p style="margin-top:2rem"><a class="button button-dark" href={settings.resumeUrl} download>Download resume PDF ↓</a></p></div></section>
+</BaseLayout>

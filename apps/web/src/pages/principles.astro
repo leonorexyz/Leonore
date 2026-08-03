@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../lib/content';
+
+const { principles } = await getPortfolioContent();
+---
+
+<BaseLayout title="Architecture Principles | Hengki Pranoto" description="Seven principles for deliverable, resilient, evidence-led enterprise architecture.">
+  <header class="page-hero surface-bright"><div class="shell page-hero-grid"><div><p class="eyebrow">Decision framework</p><h1>Architecture principles</h1><p class="lead">A practical framework for choosing what to build, what to defer, how to operate it, and how to recover it.</p></div><aside class="page-aside">Principles are only useful when they change a decision. Each one includes a practical application.</aside></div></header>
+  <section class="page-section-compact"><div class="shell principles-list">
+    {principles.map((principle) => <article class="principle-row"><span>{principle.number}</span><div><h2 style="font-size: clamp(1.65rem, 3vw, 2.65rem)">{principle.title}</h2><p style="margin-top: 1rem">{principle.description}</p></div><p class="example"><strong>In practice</strong><br />{principle.example}</p></article>)}
+  </div></section>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../lib/content';
+
+const { settings } = await getPortfolioContent();
+---
+
+<BaseLayout title="Contact Hengki Pranoto" description="Contact Hengki Pranoto about solution architecture, modernization, platform adoption, technical delivery, or bounded AI automation.">
+  <header class="page-hero surface-bright"><div class="shell"><p class="eyebrow">Contact</p><h1 style="max-width: 980px; margin-top: 1.35rem">Bring the constraints, not just the brief.</h1><p class="lead">Share the business outcome, delivery window, existing systems, operating model, and the decision that is currently blocked.</p></div></header>
+  <section class="page-section-compact"><div class="shell contact-grid">
+    <div class="contact-panel"><p class="eyebrow">Professional channels</p><h2 style="margin-top: 1rem; font-size: clamp(2rem, 5vw, 4rem)">Start with context.</h2><p>No contact form means no unnecessary collection or spam infrastructure. Use a verified public channel below.</p><div class="contact-options">
+      {settings.contactEmail && <a class="contact-option" href={`mailto:${settings.contactEmail}`}><span>Email</span><span>{settings.contactEmail} ↗</span></a>}
+      {settings.linkedInUrl && <a class="contact-option" href={settings.linkedInUrl}><span>LinkedIn</span><span>Open profile ↗</span></a>}
+      <a class="contact-option" href={settings.githubUrl}><span>GitHub</span><span>@leonorexyz ↗</span></a>
+      <a class="contact-option" href={settings.resumeUrl} download><span>Resume</span><span>Download PDF ↓</span></a>
+    </div></div>
+    <aside class="contact-note"><h2 style="font-size: clamp(1.8rem, 4vw, 3rem)">Useful first message</h2><p>A concise note with the problem, stakeholders, non-negotiable constraints, current system shape, and desired decision is enough to begin.</p><div class="detail-callout"><strong>Privacy note</strong><p style="margin-top:.5rem">Do not send production credentials, internal endpoints, client-confidential diagrams, personal data, or unredacted logs in an initial message.</p></div></aside>
+  </div></section>
+</BaseLayout>

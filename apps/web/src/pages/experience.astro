@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../lib/content';
+
+const { experience } = await getPortfolioContent();
+---
+
+<BaseLayout title="Experience | Hengki Pranoto" description="A narrative view of Hengki Pranoto's enterprise architecture and technical delivery experience.">
+  <header class="page-hero surface-bright"><div class="shell page-hero-grid"><div><p class="eyebrow">Career narrative</p><h1>Experience</h1><p class="lead">Progression across delivery, architecture, infrastructure, consultancy, pre-sales, training, R&D, and technical leadership.</p></div><aside class="page-aside">Public details remain intentionally anonymized until employer names, dates, and outcomes pass disclosure review.</aside></div></header>
+  <section class="page-section-compact"><div class="shell timeline">
+    {experience.map((item) => (
+      <article class="timeline-entry">
+        <div class="timeline-period">{item.period}</div>
+        <div class="timeline-body">
+          <div><p class="eyebrow">{item.organization}</p><h2 style="font-size: clamp(2rem, 4vw, 3.5rem); margin-top: .75rem">{item.role}</h2></div>
+          <p>{item.scope}</p>
+          <div class="tag-list">{item.industries.map((industry) => <span>{industry}</span>)}</div>
+          <div class="split-list"><div><h4>Selected responsibilities</h4><ul>{item.responsibilities.map((entry) => <li>{entry}</li>)}</ul></div><div><h4>Selected outcomes</h4><ul>{item.outcomes.map((entry) => <li>{entry}</li>)}</ul></div></div>
+          <div class="tag-list">{item.capabilities.map((capability) => <span>{capability}</span>)}</div>
+        </div>
+      </article>
+    ))}
+  </div></section>
+</BaseLayout>

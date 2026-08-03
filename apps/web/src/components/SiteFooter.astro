@@ -1,0 +1,30 @@
+---
+import type { SiteSettings } from '../types/content';
+
+interface Props {
+  settings: SiteSettings;
+}
+
+const { settings } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <p class="eyebrow">Architecture for real constraints</p>
+      <p class="footer-statement">Deliverable systems. Explicit trade-offs. Operational ownership.</p>
+    </div>
+    <div class="footer-links" aria-label="Footer navigation">
+      <a href="/case-studies/">Case Studies</a>
+      <a href="/insights/">Insights</a>
+      <a href="/contact/">Contact</a>
+      <a href={settings.resumeUrl} download>Resume</a>
+    </div>
+    <div class="footer-meta">
+      <a href={settings.githubUrl} rel="me">GitHub</a>
+      <a href="/rss.xml">RSS</a>
+      <span>© {year} Hengki Pranoto</span>
+    </div>
+  </div>
+</footer>

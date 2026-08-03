@@ -1,0 +1,26 @@
+{
+  "name": "leonore-portfolio",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "apps/web",
+    "apps/studio"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @leonore/web",
+    "build": "npm run build --workspace @leonore/web",
+    "preview": "npm run preview --workspace @leonore/web",
+    "check": "npm run check --workspace @leonore/web && npm run check --workspace @leonore/studio",
+    "test": "npm run test --workspace @leonore/web",
+    "test:links": "node scripts/check_build.mjs",
+    "studio": "npm run dev --workspace @leonore/studio",
+    "ci": "npm run check && npm run test && npm run build && npm run test:links"
+  },
+  "devDependencies": {
+    "wrangler": "latest"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

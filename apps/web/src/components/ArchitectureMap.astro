@@ -1,0 +1,33 @@
+---
+interface Props {
+  variant?: 'delivery' | 'ai';
+}
+
+const { variant = 'delivery' } = Astro.props;
+const delivery = [
+  ['Business constraint', 'Fixed launch window'],
+  ['Architecture decision', 'Boundaries sized to the team'],
+  ['Delivery system', 'Short validation checkpoints'],
+  ['Operational gate', 'Recovery path before release']
+];
+const ai = [
+  ['Human intent', 'Explicit command or approval'],
+  ['Deterministic policy', 'Identity, scope, validation'],
+  ['Bounded AI', 'Propose, retrieve, or draft'],
+  ['Audited action', 'Reversible execution']
+];
+const nodes = variant === 'ai' ? ai : delivery;
+---
+
+<figure class="architecture-map">
+  <figcaption>{variant === 'ai' ? 'Human-approved automation boundary' : 'Constraint-to-release decision path'}</figcaption>
+  <div class="architecture-flow">
+    {nodes.map(([label, value], index) => (
+      <div class="architecture-node">
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <strong>{label}</strong>
+        <small>{value}</small>
+      </div>
+    ))}
+  </div>
+</figure>

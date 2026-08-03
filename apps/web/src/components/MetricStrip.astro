@@ -1,0 +1,21 @@
+---
+import type { ImpactMetric } from '../types/content';
+
+interface Props {
+  metrics: ImpactMetric[];
+}
+
+const { metrics } = Astro.props;
+---
+
+<dl class="metric-strip" aria-label="Verified impact metrics">
+  {metrics.filter((metric) => metric.verified).sort((a, b) => a.order - b.order).map((metric) => (
+    <div>
+      <dt>{metric.value}</dt>
+      <dd>
+        <strong>{metric.label}</strong>
+        <span>{metric.description}</span>
+      </dd>
+    </div>
+  ))}
+</dl>

@@ -1,0 +1,12 @@
+node_modules/
+.astro/
+dist/
+.wrangler/
+.npm-cache/
+.env
+.env.*
+!.env.example
+apps/web/public/admin/
+tmp/
+legacy-site/.wrangler/
+*.log

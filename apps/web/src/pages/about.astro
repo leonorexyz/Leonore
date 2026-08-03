@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../lib/content';
+
+const { profile } = await getPortfolioContent();
+---
+
+<BaseLayout title="About Hengki Pranoto | Solution Architect" description="About Hengki Pranoto's architecture approach, enterprise delivery experience, teaching, research, and Leonore Kingdom lab.">
+  <header class="page-hero surface-bright"><div class="shell"><p class="eyebrow">About</p><h1 style="max-width: 980px; margin-top: 1.35rem">Architecture grounded in delivery and operations.</h1></div></header>
+  <section class="page-section-compact"><div class="shell about-grid">
+    <aside class="about-sticky"><div class="monogram" aria-label="Hengki Pranoto initials">HP</div></aside>
+    <div class="about-copy">
+      {profile.biography.map((paragraph) => <p>{paragraph}</p>)}
+      <div class="detail-section"><h2 style="font-size: clamp(1.8rem, 4vw, 3rem)">How I work</h2><ul><li>Start with the business outcome and the constraints that can invalidate it.</li><li>Make alternatives and trade-offs visible before implementation locks them in.</li><li>Size architecture to the team and operating model, not to fashion.</li><li>Design monitoring, ownership, failure handling, and rollback with the happy path.</li><li>Separate verified evidence from assumptions and future intent.</li></ul></div>
+      <div class="detail-section"><h2 style="font-size: clamp(1.8rem, 4vw, 3rem)">Teaching and research</h2><p>Technical enablement is part of architecture: reusable standards, review criteria, training, and clear reasoning let teams make better decisions without central bottlenecks. Continuing research includes AI automation, human approval boundaries, and prior academic work in face recognition.</p></div>
+      <div class="detail-section"><h2 style="font-size: clamp(1.8rem, 4vw, 3rem)">Leonore Kingdom</h2><p>{profile.labSummary}</p><p><a class="text-link" href="/lab/">Visit the lab overview <span aria-hidden="true">↗</span></a></p></div>
+    </div>
+  </div></section>
+</BaseLayout>

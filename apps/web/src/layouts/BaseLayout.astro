@@ -1,0 +1,96 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { getPortfolioContent } from '../lib/content';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedAt?: string;
+  noindex?: boolean;
+  breadcrumbs?: Array<{ name: string; url: string }>;
+}
+
+const content = await getPortfolioContent();
+const { settings, profile } = content;
+const {
+  title = settings.title,
+  description = settings.description,
+  image = '/og.png',
+  type = 'website',
+  publishedAt,
+  noindex = false,
+  breadcrumbs = []
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, settings.domain).toString();
+const socialImage = new URL(image, settings.domain).toString();
+const analyticsToken = import.meta.env.PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN;
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: settings.title,
+    url: settings.domain,
+    description: settings.description
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: profile.name,
+    jobTitle: profile.title,
+    url: settings.domain,
+    homeLocation: { '@type': 'Place', name: profile.location },
+    sameAs: [settings.githubUrl, settings.linkedInUrl].filter(Boolean)
+  },
+  ...(breadcrumbs.length ? [{
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: new URL(item.url, settings.domain).toString()
+    }))
+  }] : [])
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#091718" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Hengki Pranoto Insights" href="/rss.xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Hengki Pranoto - Solution Architect" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    {publishedAt && <meta property="article:published_time" content={publishedAt} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <title>{title}</title>
+    {analyticsToken && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: analyticsToken })}></script>}
+  </head>
+  <body>
+    <SiteHeader />
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter settings={settings} />
+  </body>
+</html>

@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../../lib/content';
+import { toSlug } from '../../lib/slug';
+import type { Article } from '../../types/content';
+
+export async function getStaticPaths() {
+  const { articles } = await getPortfolioContent();
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+
+interface Props { article: Article; }
+const { article } = Astro.props;
+const breadcrumbs = [{ name: 'Home', url: '/' }, { name: 'Insights', url: '/insights/' }, { name: article.title, url: `/insights/${article.slug}/` }];
+const articleSchema = {
+  '@context': 'https://schema.org', '@type': 'TechArticle', headline: article.title, description: article.summary,
+  datePublished: article.publishedAt, dateModified: article.updatedAt || article.publishedAt,
+  author: { '@type': 'Person', name: 'Hengki Pranoto' }, mainEntityOfPage: `https://leonorekingdom.xyz/insights/${article.slug}/`
+};
+---
+
+<BaseLayout title={article.seoTitle} description={article.seoDescription} type="article" publishedAt={article.publishedAt} breadcrumbs={breadcrumbs}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <header class="page-hero surface-bright"><div class="shell article-header"><p class="eyebrow">{article.category}</p><h1 style="margin-top:1.35rem">{article.title}</h1><p class="lead">{article.summary}</p><div class="article-byline"><span>By Hengki Pranoto</span><time datetime={article.publishedAt}>{article.publishedAt}</time><span>{article.readingMinutes} minute read</span></div><div class="filter-links">{article.tags.map((tag) => <a class="tag-link" href={`/insights/tags/${toSlug(tag)}/`}>#{tag}</a>)}</div></div></header>
+  <article class="page-section-compact"><div class="narrow prose">{article.body.map((block) => <section>{block.heading && <h2>{block.heading}</h2>}{block.paragraphs.map((paragraph) => <p>{paragraph}</p>)}{block.bullets && <ul>{block.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}{block.code && <pre><code>{block.code}</code></pre>}</section>)}</div></article>
+</BaseLayout>

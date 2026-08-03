@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPortfolioContent } from '../../lib/content';
+import { uniqueSlugs } from '../../lib/slug';
+
+const { articles } = await getPortfolioContent();
+const categories = uniqueSlugs(articles.map((article) => article.category));
+const tags = uniqueSlugs(articles.flatMap((article) => article.tags));
+---
+
+<BaseLayout title="Insights | Hengki Pranoto" description="Articles on architecture decisions, platform engineering, delivery, governance, observability, AI, and technical leadership.">
+  <header class="page-hero surface-bright"><div class="shell page-hero-grid"><div><p class="eyebrow">Technical writing</p><h1>Insights</h1><p class="lead">Notes for practitioners making architecture decisions under delivery and operational constraints.</p></div><aside class="page-aside">Written as decision guidance, not universal prescriptions. Context determines the viable architecture.</aside></div></header>
+  <section class="page-section-compact"><div class="shell"><div class="filter-links" aria-label="Browse insight categories">{categories.map((category) => <a class="tag-link" href={`/insights/categories/${category}/`}>{category.replaceAll('-', ' ')}</a>)}{tags.map((tag) => <a class="tag-link" href={`/insights/tags/${tag}/`}>#{tag}</a>)}</div><div class="insight-list" style="margin-top:3rem">{articles.map((article) => <article class="insight-row"><span>{article.category}</span><div><h2><a href={`/insights/${article.slug}/`}>{article.title}</a></h2><p>{article.summary}</p><div class="tag-list" style="margin-top:1rem">{article.tags.map((tag) => <span>{tag}</span>)}</div></div><time datetime={article.publishedAt}>{article.publishedAt}<br />{article.readingMinutes} min</time></article>)}</div></div></section>
+</BaseLayout>
