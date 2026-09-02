@@ -6,7 +6,7 @@
 2. Deploy `apps/web/dist` to the `leonore-portfolio` Cloudflare Pages project.
 3. Verify the Pages deployment URL before changing any domain.
 4. Keep the legacy Pages project attached to `backup.leonorekingdom.xyz`.
-5. Attach `leonorekingdom.xyz` and `www.leonorekingdom.xyz` only after the new deployment is healthy.
+5. Keep the portfolio attached to `backuppro.leonorekingdom.xyz`; the apex and `www` names are reserved for the future community profile.
 
 ## CMS publication
 
@@ -16,8 +16,8 @@ Create a Cloudflare production deploy hook and register it as a Sanity webhook f
 
 ## Rollback
 
-1. Reassign `leonorekingdom.xyz` to the last successful Cloudflare Pages deployment or use the Pages rollback control.
-2. If the new project is unavailable, point the apex back to the legacy Pages project after confirming `backup.leonorekingdom.xyz` is healthy.
+1. Reassign `backuppro.leonorekingdom.xyz` to the last successful Cloudflare Pages deployment or use the Pages rollback control.
+2. If the new project is unavailable, restore the portfolio's previous Pages deployment at `backuppro.leonorekingdom.xyz` after confirming `backup.leonorekingdom.xyz` is healthy.
 3. Do not delete either project or its DNS record during incident response.
 
 ## Content review gates

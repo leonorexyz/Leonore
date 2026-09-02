@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://leonorekingdom.xyz',
+  site: 'https://backuppro.leonorekingdom.xyz',
   output: 'static',
   integrations: [sitemap()],
   build: {

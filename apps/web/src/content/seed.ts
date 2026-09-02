@@ -4,7 +4,7 @@ export const seedContent: PortfolioContent = {
   settings: {
     title: 'Hengki Pranoto - Solution Architect',
     description: 'Pragmatic enterprise architecture for systems teams can deliver, operate, and evolve.',
-    domain: 'https://leonorekingdom.xyz',
+    domain: 'https://backuppro.leonorekingdom.xyz',
     githubUrl: 'https://github.com/leonorexyz',
     resumeUrl: '/resume/hengki-pranoto-resume.pdf',
     availability: 'Available for remote and international collaboration'
